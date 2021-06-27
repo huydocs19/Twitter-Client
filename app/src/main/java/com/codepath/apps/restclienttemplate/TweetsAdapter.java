@@ -1,8 +1,10 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.app.Activity;
 import android.content.Context;
 
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.Gravity;
@@ -30,8 +32,11 @@ import java.util.List;
 
 import okhttp3.Headers;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
 
+    private static final int REQUEST_CODE = 21;
     Context context;
     List<Tweet> tweets;
     TwitterClient client;
@@ -135,9 +140,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivLike.setColorFilter(context.getResources().getColor(R.color.medium_gray));
             }
             if (tweet.retweeted) {
-                ivLike.setColorFilter(context.getResources().getColor(R.color.twitter_blue_fill_pressed));
+                ivRetweet.setColorFilter(context.getResources().getColor(R.color.twitter_blue_fill_pressed));
             } else {
-                ivLike.setColorFilter(context.getResources().getColor(R.color.medium_gray));
+                ivRetweet.setColorFilter(context.getResources().getColor(R.color.medium_gray));
             }
             if (tweet.mediaType != null) {
                 if (tweet.mediaType.equals("photo")) {
@@ -160,14 +165,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 boolean replySelected = false;
                 @Override
                 public void onClick(View v) {
-                    replySelected = !replySelected;
-                    if (replySelected) {
-                        ivReply.setColorFilter(context.getResources().getColor(R.color.twitter_blue_fill_pressed));
-
-                    } else {
-                        ivReply.setColorFilter(context.getResources().getColor(R.color.medium_gray));
-                    }
-
+                    // Navigate to the compose Activity
+                    Intent intent = new Intent(context, ReplyActivity.class);
+                    intent.putExtra("username", tweet.user.screenName);
+                    intent.putExtra("status_id", tweet.id);
+                    ((TimelineActivity) context).startActivityForResult(intent, REQUEST_CODE);
                 }
             });
             ivRetweet.setOnClickListener(new View.OnClickListener() {

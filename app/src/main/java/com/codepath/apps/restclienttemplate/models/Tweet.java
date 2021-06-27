@@ -68,8 +68,16 @@ public class Tweet {
     }
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
+        Log.d("Tweet", jsonObject.toString());
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+        if (jsonObject.has("full_text")) {
+            tweet.body = jsonObject.getString("full_text");
+        } else if (jsonObject.has("full_text")) {
+            tweet.body = jsonObject.getString("text");
+        } else {
+            tweet.body = jsonObject.getString("");
+        }
+
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.id = jsonObject.getLong("id");
         User user = User.fromJson(jsonObject.getJSONObject("user"));
@@ -79,8 +87,12 @@ public class Tweet {
         tweet.favoriteCount = jsonObject.getInt("favorite_count");
         tweet.retweeted = jsonObject.getBoolean("retweeted");
         tweet.favorited = jsonObject.getBoolean("favorited");
+
         setMediaTypeAndURL(jsonObject, tweet);
-        if (tweet.mediaUrl != null) {
+        if (tweet.mediaType != null && tweet.mediaType.equals("photo")) {
+            Log.d("Tweet", tweet.getFormattedTimestamp() + " " + tweet.mediaType + ": " + tweet.mediaUrl);
+        }
+        if (tweet.mediaType != null && tweet.mediaType.equals("video")) {
             Log.d("Tweet", tweet.getFormattedTimestamp() + " " + tweet.mediaType + ": " + tweet.mediaUrl);
         }
 
@@ -102,13 +114,30 @@ public class Tweet {
         return TimeFormatter.getTimeDifference(createdAt);
     }
     public static void setMediaTypeAndURL(JSONObject jsonObject, Tweet tweet) throws JSONException {
+        JSONObject entitiesJsonObject;
+        if (jsonObject.has("extended_entities")) {
+            entitiesJsonObject = jsonObject.getJSONObject("extended_entities");
+        } else if ((jsonObject.has("entities")))  {
+            entitiesJsonObject = jsonObject.getJSONObject("entities");
+        } else {
+            return;
+        }
 
-        JSONObject entitiesJsonObject = jsonObject.getJSONObject("entities");
+
         if (entitiesJsonObject.has("media")) {
             JSONArray mediaJsonArray = entitiesJsonObject.getJSONArray("media");
+
             JSONObject firstMedia = mediaJsonArray.getJSONObject(0);
-            tweet.mediaUrl = firstMedia.getString("media_url_https");
             tweet.mediaType = firstMedia.getString("type");
+            if (tweet.mediaType.equals("video")) {
+                tweet.mediaUrl = firstMedia.getJSONObject("video_info")
+                        .getJSONArray("variants").getJSONObject(0).getString("url");
+            } else {
+                tweet.mediaUrl = firstMedia.getString("media_url_https");
+            }
+
+
+
         }
 
     }
