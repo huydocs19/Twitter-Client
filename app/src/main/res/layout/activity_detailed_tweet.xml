@@ -1,9 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    tools:context=".DetailedTweetActivity">
+    android:layout_margin="5dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/ivYouRetweeted"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="2dp"
+        tools:layout_marginStart="0dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvName"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@id/ivProfileImage"
+        android:fontFamily="serif"
+        tools:text="TwitterAPI" />
+
+    <TextView
+        android:id="@+id/tvBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvScreenName"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:autoLink="all"
+        android:fontFamily="serif"
+        android:textColor="@android:color/black"
+        tools:text="To make room for more expression, we will now count all emojis as equal—including those with gender‍‍‍ and skin t… https://t.co/MkGjXf9aXm" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvYouRetweeted"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:fontFamily="serif"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        tools:text="Twitter API" />
+
+    <ImageView
+        android:id="@+id/ivReply"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_below="@+id/media"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        app:srcCompat="@drawable/ic_baseline_reply_24"
+        app:tint="@color/medium_gray" />
+
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_below="@id/media"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@id/ivReply"
+        app:srcCompat="@drawable/ic_vector_retweet"
+        app:tint="@color/medium_gray" />
+
+    <ImageView
+        android:id="@+id/ivYouRetweeted"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="0dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_vector_retweet"
+        app:tint="@color/medium_gray" />
+
+    <ImageView
+        android:id="@+id/ivLike"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_below="@id/media"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@id/ivRetweet"
+        app:srcCompat="@drawable/ic_vector_heart"
+        app:tint="@color/medium_gray" />
+
+    <TextView
+        android:id="@+id/tvRetweetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:textSize="14sp"
+        tools:text="411 Retweets" />
+
+    <TextView
+        android:id="@+id/tvFavoriteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@+id/tvRetweetCount"
+        android:textSize="14sp"
+        tools:text="914 Likes" />
+
+    <FrameLayout
+        android:id="@+id/media"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBody"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/ivProfileImage">
+
+        <ImageView
+            android:id="@+id/ivTweetPhoto"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <FrameLayout
+            android:id="@+id/tweetVideoWrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/vvTweetVideo"
+                android:layout_width="340dp"
+                android:layout_height="260dp"
+                android:visibility="visible">
+
+            </com.google.android.exoplayer2.ui.PlayerView>
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvYouRetweeted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@id/ivProfileImage"
+        android:text="You Retweeted"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        tools:text="7:45 PM" />
+
+    <TextView
+        android:id="@+id/tvDot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/tvTime"
+        android:text="•" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/media"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/tvDot"
+        tools:text="10/4/2015" />
+
+    <RelativeLayout
+        android:id="@+id/reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:background="#039BE5"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etTweet2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="10dp"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/btnReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etTweet2"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="259dp"
+            android:layout_marginTop="5dp"
+            android:text="Reply"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvTweetReply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+
+        android:layout_marginBottom="5dp"
+        android:visibility="visible"
+        tools:text="Reply to Twitter API" />
+
+
+</RelativeLayout>

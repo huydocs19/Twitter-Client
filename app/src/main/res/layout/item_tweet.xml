@@ -150,10 +150,10 @@
              android:layout_height="wrap_content"
              android:id="@+id/tweetVideoWrapper">
 
-             <VideoView
+            <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/vvTweetVideo"
                 android:layout_width="340dp"
-                android:layout_height="200dp"
+                android:layout_height="260dp"
                 android:visibility="visible" />
 
         </FrameLayout>

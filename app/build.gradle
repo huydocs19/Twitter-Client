@@ -18,6 +18,12 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+
+        }
         buildConfigField("String", "CONSUMER_KEY", apikeyProperties['CONSUMER_KEY'])
         buildConfigField("String", "CONSUMER_SECRET", apikeyProperties['CONSUMER_SECRET'])
         vectorDrawables.useSupportLibrary = true
@@ -62,5 +68,6 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.12'
 
 
-
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.5' //current version as of oct,2019
+    //there is also an option to import only specific modules
 }

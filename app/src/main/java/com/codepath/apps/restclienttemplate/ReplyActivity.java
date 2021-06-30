@@ -38,6 +38,7 @@ public class ReplyActivity extends AppCompatActivity {
 
         etReply = findViewById(R.id.etReply);
         btnReply = findViewById(R.id.btnReply);
+        etReply.setHint("Reply to @" + getIntent().getStringExtra("username"));
 
         // Set click listener on button
         btnReply.setOnClickListener(new View.OnClickListener() {

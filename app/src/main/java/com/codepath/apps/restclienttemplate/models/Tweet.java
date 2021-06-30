@@ -15,8 +15,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Parcel
 @Entity(foreignKeys = @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId"))
@@ -72,10 +77,10 @@ public class Tweet {
         Tweet tweet = new Tweet();
         if (jsonObject.has("full_text")) {
             tweet.body = jsonObject.getString("full_text");
-        } else if (jsonObject.has("full_text")) {
+        } else if (jsonObject.has("text")) {
             tweet.body = jsonObject.getString("text");
         } else {
-            tweet.body = jsonObject.getString("");
+            tweet.body = "";
         }
 
         tweet.createdAt = jsonObject.getString("created_at");
@@ -113,6 +118,36 @@ public class Tweet {
     public String getFormattedTimestamp() {
         return TimeFormatter.getTimeDifference(createdAt);
     }
+    public String getTime() {
+        String time = "";
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat format = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+
+        try {
+            Date date = format.parse(createdAt);
+            SimpleDateFormat newFormat = new SimpleDateFormat("h:mm a");
+            time = newFormat.format(date);
+
+        }  catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return time;
+    }
+    public String getDate() {
+        String postedDate = "";
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat format = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+
+        try {
+            Date date = format.parse(createdAt);
+            SimpleDateFormat newFormat = new SimpleDateFormat("MM/dd/yyyy");
+            postedDate = newFormat.format(date);
+
+        }  catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return postedDate;
+    }
     public static void setMediaTypeAndURL(JSONObject jsonObject, Tweet tweet) throws JSONException {
         JSONObject entitiesJsonObject;
         if (jsonObject.has("extended_entities")) {
@@ -129,11 +164,12 @@ public class Tweet {
 
             JSONObject firstMedia = mediaJsonArray.getJSONObject(0);
             tweet.mediaType = firstMedia.getString("type");
-            if (tweet.mediaType.equals("video")) {
+            if (tweet.mediaType.equals("photo")) {
+                tweet.mediaUrl = firstMedia.getString("media_url_https");
+
+            } else {
                 tweet.mediaUrl = firstMedia.getJSONObject("video_info")
                         .getJSONArray("variants").getJSONObject(0).getString("url");
-            } else {
-                tweet.mediaUrl = firstMedia.getString("media_url_https");
             }
 
 

@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface TweetDao {
 
-    @Query("SELECT Tweet.body AS tweet_body, Tweet.createdAt as tweet_createdAt, " +
+    @Query("SELECT Tweet.body AS tweet_body, Tweet.createdAt as tweet_createdAt, Tweet.id AS tweet_id, Tweet.userId AS tweet_userId," +
             "Tweet.retweetCount AS tweet_retweetCount, Tweet.favoriteCount AS tweet_favoriteCount," +
             "Tweet.mediaType AS tweet_mediaType, Tweet.mediaUrl AS tweet_mediaUrl, Tweet.favorited AS tweet_favorited, " +
             "Tweet.retweeted AS tweet_retweeted," +
