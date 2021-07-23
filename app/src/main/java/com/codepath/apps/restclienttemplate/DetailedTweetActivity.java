@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -96,7 +97,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
         tvDate = findViewById(R.id.tvDate);
         btnReply = findViewById(R.id.btnReply);
         tvTweetReply = findViewById(R.id.tvTweetReply);
-        etTweet2 = findViewById(R.id.etTweet2);
+        etTweet2 = findViewById(R.id.etReply);
         reply = findViewById(R.id.reply);
         client = TwitterApp.getRestClient(this);
         tvWordCount = findViewById(R.id.tvWordCount);
@@ -119,88 +120,15 @@ public class DetailedTweetActivity extends AppCompatActivity {
         tvTweetReply.setText("Reply to " + tweet.user.name);
         tvTweetReply.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                reply.setVisibility(View.VISIBLE);
+            public void onClick(View view) {
                 tvTweetReply.setVisibility(View.GONE);
-                etTweet2.requestFocus();
-                imm = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    imm = (InputMethodManager)
-                            getSystemService(Context.INPUT_METHOD_SERVICE);
-                }
-                imm.showSoftInput(etTweet2,InputMethodManager.SHOW_IMPLICIT);
-
-                etTweet2.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        String tweetContent = s.toString();
-                        tvWordCount.setText(String.valueOf(280 - s.length()));
-                        if (tweetContent.length() > MAX_TWEET_LENGTH) {
-                            tvWordCount.setTextColor(Color.RED);
-                        }
-                    }
-                });
-
-
-                // Set click listener  bonutton
-                btnReply.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String tweetContent = etTweet2.getText().toString();
-                        if (tweetContent.isEmpty()) {
-                            Toast.makeText(DetailedTweetActivity.this, "Sorry, your reply cannot be empty", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (tweetContent.length() > MAX_TWEET_LENGTH) {
-                            Toast.makeText(DetailedTweetActivity.this, "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        Toast.makeText(DetailedTweetActivity.this, tweetContent, Toast.LENGTH_LONG).show();
-                        String username = tweet.user.screenName;
-                        long statusID = tweet.id;
-                        Log.i(TAG, "DetailedTweetActivity " + username + " " + statusID);
-                        String replyContent = "@" + username + " " + tweetContent;
-                        // Make an API call to Twitter to publish the tweet
-                        client.replyTweet(replyContent, statusID, new JsonHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                                Log.i(TAG, "onSuccess to publish tweet");
-                                try {
-                                    Tweet tweet = Tweet.fromJson(json.jsonObject);
-                                    Log.i(TAG, "Published tweet says " + tweet.body);
-                                    // Prepare data intent
-                                    Intent newData = new Intent();
-                                    // Pass relevant data back as a result
-                                    newData.putExtra("tweet", Parcels.wrap(tweet));
-                                    // Activity finished ok, return the data
-                                    setResult(RESULT_OK, newData); // set result code and bundle data for response
-                                    etTweet2.clearComposingText();
-                                    reply.setVisibility(View.GONE);
-                                    tvTweetReply.setVisibility(View.VISIBLE);
-                                    imm.hideSoftInputFromWindow(etTweet2.getWindowToken(), 0);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                                Log.e(TAG, "onFailure to publish tweet", throwable);
-                            }
-                        });
-
-                    }
-                });
-
+                // Begin the transaction
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.fragment_reply_placeholder, ReplyFragment.newInstance(tweet.user.screenName, tweet.id));
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
             }
         });
 
@@ -336,6 +264,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE) {
+                tvTweetReply.setVisibility(View.VISIBLE);
                 // Get data from the intent (tweet)
                 Tweet newTweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
                 // Prepare data intent
@@ -344,6 +273,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
                 newData.putExtra("tweet", Parcels.wrap(newTweet));
                 // Activity finished ok, return the data
                 setResult(RESULT_OK, newData); // set result code and bundle data for response
+
 
 
             }

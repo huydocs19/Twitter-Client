@@ -62,5 +62,12 @@ tools:context=".ComposeActivity">
     android:text="@android:string/cancel"
     android:textColor="@color/twitter_blue"
     android:textSize="19sp" />
+    <FrameLayout
+        android:id="@+id/fragment_compose_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </FrameLayout>
+
 
 </RelativeLayout>

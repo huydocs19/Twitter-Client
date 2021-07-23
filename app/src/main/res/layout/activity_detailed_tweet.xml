@@ -197,46 +197,12 @@
         android:layout_toEndOf="@+id/tvDot"
         tools:text="10/4/2015" />
 
-    <RelativeLayout
-        android:id="@+id/reply"
+    <FrameLayout
+        android:id="@+id/fragment_reply_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:background="#039BE5"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/etTweet2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="10dp"
-            android:ems="10"
-            android:inputType="textMultiLine" />
-
-        <Button
-            android:id="@+id/btnReply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/etTweet2"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="259dp"
-            android:layout_marginTop="5dp"
-            android:text="Reply"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/tvWordCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etTweet2"
-            android:layout_marginStart="220dp"
-            android:layout_marginTop="20dp"
-            android:text="280" />
-
-    </RelativeLayout>
+        android:layout_alignParentBottom="true">
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tvTweetReply"

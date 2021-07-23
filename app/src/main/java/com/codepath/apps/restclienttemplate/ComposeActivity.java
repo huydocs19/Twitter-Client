@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,11 +61,9 @@ public class ComposeActivity extends AppCompatActivity {
         String userImageUrl = pref.getString("userImageUrl", "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png");
         Glide.with(this).load(userImageUrl).error(R.drawable.ic_vector_person_stroke).into(ivComposeAvatar);
 
-
-        if (etCompose.requestFocus()){
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(etCompose,InputMethodManager.SHOW_IMPLICIT);
-        }
+        etCompose.requestFocus();
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         etCompose.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -129,14 +129,16 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                showEditDialog();
+                // Begin the transaction
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.fragment_compose_placeholder, SaveDraftFragment.newInstance());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
             }
         });
 
     }
-    private void showEditDialog() {
-        FragmentManager fm = getSupportFragmentManager();
-        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance("Some Title");
-        editNameDialogFragment.show(fm, "fragment_edit_name");
-    }
+
 }
