@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -54,7 +57,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
     ImageView ivTweetPhoto;
     FrameLayout media;
     // VideoView mVideoView;
-
+    TextView tvWordCount;
     TextView tvTime;
     TextView tvDate;
     Button btnReply;
@@ -96,6 +99,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
         etTweet2 = findViewById(R.id.etTweet2);
         reply = findViewById(R.id.reply);
         client = TwitterApp.getRestClient(this);
+        tvWordCount = findViewById(R.id.tvWordCount);
 
         Tweet tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
         bind(tweet);
@@ -125,6 +129,25 @@ public class DetailedTweetActivity extends AppCompatActivity {
                             getSystemService(Context.INPUT_METHOD_SERVICE);
                 }
                 imm.showSoftInput(etTweet2,InputMethodManager.SHOW_IMPLICIT);
+
+                etTweet2.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        String tweetContent = s.toString();
+                        tvWordCount.setText(String.valueOf(280 - s.length()));
+                        if (tweetContent.length() > MAX_TWEET_LENGTH) {
+                            tvWordCount.setTextColor(Color.RED);
+                        }
+                    }
+                });
 
 
                 // Set click listener  bonutton

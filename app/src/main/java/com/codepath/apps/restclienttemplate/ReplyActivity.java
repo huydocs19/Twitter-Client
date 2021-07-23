@@ -2,14 +2,22 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -27,7 +35,12 @@ public class ReplyActivity extends AppCompatActivity {
 
     EditText etReply;
     Button btnReply;
+    ImageView ivReplyAvatar;
     TwitterClient client;
+    TextView tvCancel;
+    TextView tvReplyTo;
+    TextView tvWordCount;
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +49,38 @@ public class ReplyActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
 
+
         etReply = findViewById(R.id.etReply);
         btnReply = findViewById(R.id.btnReply);
-        etReply.setHint("Reply to @" + getIntent().getStringExtra("username"));
+        tvCancel = findViewById(R.id.tvCancel);
+        tvReplyTo = findViewById(R.id.tvReplyTo);
+        ivReplyAvatar = findViewById(R.id.ivComposeAvatar);
+        tvReplyTo.setText("Reply to @" + getIntent().getStringExtra("username"));
+        Glide.with(this).load(getIntent().getStringExtra("avatar")).into(ivReplyAvatar);
+        tvWordCount = findViewById(R.id.tvWordCount);
+
+        if (etReply.requestFocus()){
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(etReply,InputMethodManager.SHOW_IMPLICIT);
+        }
+        etReply.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String tweetContent = s.toString();
+                tvWordCount.setText(String.valueOf(280 - s.length()));
+                if (tweetContent.length() > MAX_TWEET_LENGTH) {
+                    tvWordCount.setTextColor(Color.RED);
+                }
+            }
+        });
 
         // Set click listener on button
         btnReply.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +126,12 @@ public class ReplyActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

@@ -15,9 +15,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity android:name=".ReplyActivity">
-
+            android:windowSoftInputMode="stateVisible|adjustResize"
         </activity>
-        <activity android:name=".ComposeActivity" />
+        <activity android:name=".ComposeActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity android:name=".DetailedTweetActivity"
             android:windowSoftInputMode="adjustResize"/>
 

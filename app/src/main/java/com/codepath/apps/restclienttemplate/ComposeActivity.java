@@ -1,15 +1,26 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -21,11 +32,14 @@ import okhttp3.Headers;
 public class ComposeActivity extends AppCompatActivity {
     public static final String TAG = "ComposeActivity";
 
-    public static final int MAX_TWEET_LENGTH = 140;
+    public static final int MAX_TWEET_LENGTH = 280;
 
 
     EditText etCompose;
     Button btnTweet;
+    TextView tvWordCount;
+    ImageView ivComposeAvatar;
+    TextView tvCancel;
     TwitterClient client;
 
     @Override
@@ -37,6 +51,37 @@ public class ComposeActivity extends AppCompatActivity {
 
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
+        tvWordCount = findViewById(R.id.tvWordCount);
+        ivComposeAvatar = findViewById(R.id.ivComposeAvatar);
+        tvCancel = findViewById(R.id.tvCancel);
+        SharedPreferences pref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String userImageUrl = pref.getString("userImageUrl", "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png");
+        Glide.with(this).load(userImageUrl).error(R.drawable.ic_vector_person_stroke).into(ivComposeAvatar);
+
+
+        if (etCompose.requestFocus()){
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(etCompose,InputMethodManager.SHOW_IMPLICIT);
+        }
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String tweetContent = s.toString();
+                tvWordCount.setText(String.valueOf(280 - s.length()));
+                if (tweetContent.length() > MAX_TWEET_LENGTH) {
+                    tvWordCount.setTextColor(Color.RED);
+                }
+            }
+        });
 
         // Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +125,18 @@ public class ComposeActivity extends AppCompatActivity {
 
             }
         });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                showEditDialog();
+            }
+        });
 
+    }
+    private void showEditDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance("Some Title");
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

@@ -234,6 +234,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     Intent intent = new Intent(context, ReplyActivity.class);
                     intent.putExtra("username", tweet.user.screenName);
                     intent.putExtra("status_id", tweet.id);
+                    intent.putExtra("avatar", tweet.user.profileImageUrl);
                     ((TimelineActivity) context).startActivityForResult(intent, REQUEST_CODE);
                 }
             });
