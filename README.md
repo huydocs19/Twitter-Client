@@ -28,7 +28,7 @@
 
 Here's a walkthrough of implemented user stories:
 
-
+<img src='walkthrough01.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='walkthrough00.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
