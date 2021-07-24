@@ -389,13 +389,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
     }
 
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull @NotNull ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        holder.mVideoView.onPause();
-    }
-
     private void playVideo(VideoView mVideoView, View iView) {
 
         MediaController mediaController = new MediaController(context);

@@ -193,6 +193,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
                 Intent intent = new Intent(DetailedTweetActivity.this, ReplyActivity.class);
                 intent.putExtra("username", tweet.user.screenName);
                 intent.putExtra("status_id", tweet.id);
+                intent.putExtra("avatar", tweet.user.profileImageUrl);
                 DetailedTweetActivity.this.startActivityForResult(intent, REQUEST_CODE);
 
             }

@@ -105,7 +105,7 @@ public class ReplyFragment extends Fragment {
                     Toast.makeText(getContext(), "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(getContext(), tweetContent, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Reply sent", Toast.LENGTH_LONG).show();
                 String username = getArguments().getString("screenName", "");
                 long statusID = getArguments().getLong("tweetId", 0);;
                 Log.i(TAG, "ReplyFragment " + username + " " + statusID);

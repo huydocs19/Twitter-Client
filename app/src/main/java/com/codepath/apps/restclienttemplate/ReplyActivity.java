@@ -59,7 +59,8 @@ public class ReplyActivity extends AppCompatActivity {
         ivReplyAvatar = findViewById(R.id.ivReplyAvatar);
 
         tvReplyTo.setText("Reply to @" + getIntent().getStringExtra("username"));
-        Glide.with(this).load(getIntent().getStringExtra("avatar")).into(ivReplyAvatar);
+        String imageUrl = getIntent().getStringExtra("avatar");
+        Glide.with(this).load(imageUrl).into(ivReplyAvatar);
         tvWordCount = findViewById(R.id.tvWordCount);
 
         etReply.addTextChangedListener(new TextWatcher() {
@@ -95,7 +96,7 @@ public class ReplyActivity extends AppCompatActivity {
                     Toast.makeText(ReplyActivity.this, "Sorry, your reply is too long", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(ReplyActivity.this, tweetContent, Toast.LENGTH_LONG).show();
+                Toast.makeText(ReplyActivity.this, "Reply sent", Toast.LENGTH_LONG).show();
                 String username = getIntent().getStringExtra("username");
                 long statusID = getIntent().getLongExtra("status_id", 0);
                 Log.i(TAG, "ReplyActivity " + username + " " + statusID);

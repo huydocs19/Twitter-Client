@@ -93,7 +93,7 @@ public class ComposeActivity extends AppCompatActivity {
                     Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_LONG).show();
                     return;
                 }
-                Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
+                Toast.makeText(ComposeActivity.this, "Your Tweet was sent", Toast.LENGTH_LONG).show();
                 // Make an API call to Twitter to publish the tweet
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
@@ -126,13 +126,7 @@ public class ComposeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                // Begin the transaction
-//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                // Replace the contents of the container with the new fragment
-//                ft.replace(R.id.fragment_compose_placeholder, SaveDraftFragment.newInstance());
-//                // or ft.add(R.id.your_placeholder, new FooFragment());
-//                // Complete the changes added above
-//                ft.commit();
+
                 FragmentManager fm = getSupportFragmentManager();
                 SaveDraftFragment editNameDialogFragment = SaveDraftFragment.newInstance(etCompose.getText().toString());
                 editNameDialogFragment.show(fm, "fragment_save_draft");
