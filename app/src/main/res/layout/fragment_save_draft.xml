@@ -21,14 +21,15 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/ivDeleteDraft"
-            android:text="Delete Draft" />
+            android:text="Delete"
+            android:textColor="#C60202" />
 
         <ImageView
             android:id="@+id/ivDeleteDraft"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="5dp"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
 
     </RelativeLayout>
 
@@ -44,19 +45,18 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/ivSaveDraft"
-            android:text="Save Draft" />
+            android:text="Save Draft"
+            android:textColor="@android:color/black" />
 
         <ImageView
             android:id="@+id/ivSaveDraft"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="10dp"
-            app:srcCompat="@android:drawable/ic_menu_save" />
+            app:srcCompat="@drawable/ic_baseline_save_alt_24" />
 
 
     </RelativeLayout>
-
-
 
 
     <Button
@@ -65,7 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvSaveDraft"
         android:layout_marginTop="10dp"
-        android:text="Cancel" />
+        android:background="@color/twitter_blue"
+        android:text="Cancel"
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>

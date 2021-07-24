@@ -16,9 +16,9 @@
         app:titleTextColor="@android:color/white">
 
         <ImageView
-            android:layout_width="56dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="0dp"
             app:srcCompat="@drawable/ic_launcher_twitter_no_border" />
     </androidx.appcompat.widget.Toolbar>
 

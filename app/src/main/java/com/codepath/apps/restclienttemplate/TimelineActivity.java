@@ -146,14 +146,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.miCompose) {
-            // Compose icon has been selected
-            // Navigate to the compose Activity
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
-            return true;
 
-        }
         return super.onOptionsItemSelected(item);
     }
     @Override

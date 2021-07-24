@@ -35,6 +35,7 @@ public class ReplyFragment extends Fragment {
     EditText etReply;
     Button btnReply;
     TextView tvWordCount;
+    TextView tvCancel;
     TwitterClient client;
     public ReplyFragment() {
 
@@ -63,6 +64,7 @@ public class ReplyFragment extends Fragment {
         etReply = view.findViewById(R.id.etReply);
         btnReply = view.findViewById(R.id.btnReply);
         tvWordCount = view.findViewById(R.id.tvWordCount);
+        tvCancel = view.findViewById(R.id.tvCancel);
         client = TwitterApp.getRestClient(getContext());
 
         etReply.requestFocus();
@@ -135,6 +137,13 @@ public class ReplyFragment extends Fragment {
                     }
                 });
 
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getActivity().getSupportFragmentManager().beginTransaction().remove(ReplyFragment.this).commit();
             }
         });
     }

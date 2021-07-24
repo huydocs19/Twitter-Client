@@ -181,12 +181,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     ivTweetPhoto.setVisibility(View.VISIBLE);
                     mVideoView.setVisibility(View.GONE);
                 } else {
-                    /**
-                    mVideoView.setVideoPath(tweet.mediaUrl);
-                    mVideoView.setVisibility(View.VISIBLE);
-                    ivTweetPhoto.setVisibility(View.GONE);
-                    playVideo(mVideoView, iView);
-                     */
+
                     mVideoView.setVisibility(View.VISIBLE);
                     ivTweetPhoto.setVisibility(View.GONE);
                     prepareToPlayVideo(tweet.mediaUrl, mVideoView);
@@ -359,7 +354,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             // we are setting our exoplayer
             // when it is ready.
-            //absPlayerInternal.setPlayWhenReady(true);
+            // absPlayerInternal.setPlayWhenReady(true);
 
         } catch (Exception e) {
             // below line is used for
@@ -394,6 +389,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         }
     }
 
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull @NotNull ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.mVideoView.onPause();
+    }
 
     private void playVideo(VideoView mVideoView, View iView) {
 

@@ -2,10 +2,11 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -55,14 +56,12 @@ public class ReplyActivity extends AppCompatActivity {
         btnReply = findViewById(R.id.btnReply);
         tvCancel = findViewById(R.id.tvCancel);
         tvReplyTo = findViewById(R.id.tvReplyTo);
-        ivReplyAvatar = findViewById(R.id.ivComposeAvatar);
+        ivReplyAvatar = findViewById(R.id.ivReplyAvatar);
+
         tvReplyTo.setText("Reply to @" + getIntent().getStringExtra("username"));
         Glide.with(this).load(getIntent().getStringExtra("avatar")).into(ivReplyAvatar);
         tvWordCount = findViewById(R.id.tvWordCount);
 
-        etReply.requestFocus();
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         etReply.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -132,6 +131,8 @@ public class ReplyActivity extends AppCompatActivity {
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 finish();
             }
         });

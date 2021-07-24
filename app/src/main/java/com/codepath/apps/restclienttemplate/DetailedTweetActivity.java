@@ -1,7 +1,9 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -67,6 +70,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
     PlayerView mVideoView;
     SimpleExoPlayer absPlayerInternal;
     RelativeLayout reply;
+    ImageView ivClose;
     private static final int REQUEST_CODE = 21;
     TwitterClient client;
     InputMethodManager imm;
@@ -80,6 +84,16 @@ public class DetailedTweetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_tweet);
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        // Remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         ivProfileImage = findViewById(R.id.ivProfileImage);
         tvBody = findViewById(R.id.tvBody);
@@ -101,6 +115,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
         reply = findViewById(R.id.reply);
         client = TwitterApp.getRestClient(this);
         tvWordCount = findViewById(R.id.tvWordCount);
+        ivClose = findViewById(R.id.ivClose);
 
         Tweet tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
         bind(tweet);
@@ -118,17 +133,27 @@ public class DetailedTweetActivity extends AppCompatActivity {
         tvTime.setText(tweet.getTime());
         tvDate.setText(tweet.getDate());
         tvTweetReply.setText("Reply to " + tweet.user.name);
+
+
         tvTweetReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvTweetReply.setVisibility(View.GONE);
+
                 // Begin the transaction
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
                 ft.replace(R.id.fragment_reply_placeholder, ReplyFragment.newInstance(tweet.user.screenName, tweet.id));
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
+                ft.addToBackStack(null);
                 ft.commit();
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -264,7 +289,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE) {
-                tvTweetReply.setVisibility(View.VISIBLE);
+
                 // Get data from the intent (tweet)
                 Tweet newTweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
                 // Prepare data intent
@@ -281,6 +306,8 @@ public class DetailedTweetActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
     private void prepareToPlayVideo(String mediaUrl, PlayerView mVideoView) {
         try {
 
@@ -345,6 +372,7 @@ public class DetailedTweetActivity extends AppCompatActivity {
             }
         }
     }
+
 }
 
 
